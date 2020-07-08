@@ -8,6 +8,10 @@ class MainHandler(tornado.web.RequestHandler):
 
     def get(self):
         self.database = redis.Redis(host='localhost', port=6379, db=0)
+
+        if(self.database.get('counter') == None):
+            self.database.set("counter", 0)
+
         visitCount = int(self.database.get('counter'))
         visitCount = visitCount + 1
         hostName = socket.gethostname()
